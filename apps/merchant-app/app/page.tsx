@@ -9,7 +9,7 @@ export default function() {
   const balance = useBalance();
   return <div>
     <div>
-      hi
+      added a new div here
     </div>
     hi there {balance}
   </div>
