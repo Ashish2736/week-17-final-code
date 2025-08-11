@@ -9,19 +9,19 @@ export const authOptions = {
         })
     ],
     callbacks: {
-      async signIn({ user, account }: {
-        user: {
-          email: string;
-          name: string
-        },
-        account: {
-          provider: "google" | "github"
-        }
-      }) {
-        console.log("hi signin")
-        if (!user || !user.email) {
-          return false;
-        }
+    async signIn(params: {
+    user: { email?: string | null; name?: string | null; [key: string]: any };
+    account: { provider: string } | null;
+    profile?: any;
+    email?: any;
+    credentials?: any;
+  }) {
+    const { user, account } = params;
+
+    console.log("hi signin");
+    if (!user || !user.email) {
+      return false;
+    }
 
         await db.merchant.upsert({
           select: {
@@ -33,11 +33,11 @@ export const authOptions = {
           create: {
             email: user.email,
             name: user.name,
-            auth_type: account.provider === "google" ? "Google" : "Github" // Use a prisma type here
+            auth_type: account?.provider === "google" ? "Google" : "Github" // Use a prisma type here
           },
           update: {
             name: user.name,
-            auth_type: account.provider === "google" ? "Google" : "Github" // Use a prisma type here
+            auth_type: account?.provider === "google" ? "Google" : "Github" // Use a prisma type here
           }
         });
 
