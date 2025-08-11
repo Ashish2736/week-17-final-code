@@ -17,4 +17,6 @@ export const GET = async () => {
     })
 }
 
+
+
 export const dynamic = 'force-dynamic';  // prevents prerendering -> this means dont prerender this route,always run it as runtime.no more db calls at build
