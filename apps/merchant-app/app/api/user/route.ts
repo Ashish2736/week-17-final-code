@@ -11,6 +11,7 @@ export const GET = async () => {
              name: "adsads",
              password:"secret",
              number:"123"
+
         }
     })
     return NextResponse.json({
