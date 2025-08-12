@@ -41,6 +41,8 @@ jobs:
           sudo docker rm web-app || true
           sudo docker run -d --name web-app -p 3005:3000 tdem2736/ashish2736:latest
 
+
+
 #these steps are done by github k garcha bhane afnai machine jastai yah mention garecham ni ubuntu bhanera
 #ho tei machine ma github le it clones the repo, dockerizes it, pushes it to dockerhub. 
 
