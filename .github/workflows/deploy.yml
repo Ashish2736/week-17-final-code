@@ -22,16 +22,30 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./docker/Dockerfile.user
+        file: ./docker/Dockerfile.user #this line tells github to pick up the dockerfile from our docker/Dockerfile.user and with it github will contanarize out application
         push: true
         tags: tdem2736/ashish2736:latest  # Replace with your Docker Hub username and repository
 
     - name: Verify Pushed Image
       run: docker pull tdem2736/ashish2736:latest  # Replace with your Docker Hub username and repository
 
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          sudo docker pull tdem2736/ashish2736:latest
+          sudo docker stop web-app || true
+          sudo docker rm web-app || true
+          sudo docker run -d --name web-app -p 3005:3000 tdem2736/ashish2736:latest
 
 #these steps are done by github k garcha bhane afnai machine jastai yah mention garecham ni ubuntu bhanera
-#ho tei machine ma github le it clones the repo, dockerize it, push it to dockerhub. 
-#suru ma dockerhub ma fresh repo banaune ani tya profile ma click garera account setting ma gayera personal access token ma gayera password line haina
-#ani tyo password github ko jun repo ma ho you garna lako teskai settings ma gayera sidebar ma secrets and variables cha ni ho tesma actions click garera 
-#new repository secret ma thichera DOCKER_USERNAME ma afno docerhub ko name lekni and password banaune arko secret ma click garera ani agi docekrhub ko secret leko paste gardini.
+#ho tei machine ma github le it clones the repo, dockerizes it, pushes it to dockerhub. 
+
+#suru ma dockerhub ma fresh repo banaune ani tya profile ma click garera account setting ma gayera personal access token ma gayera password copy garne haina
+
+#ani tyo password github ko jun repo ma ho yo garna lako teskai settings ma gayera sidebar ma secrets and variables cha ni ho tesma actions click garera 
+#new repository secret ma thichera DOCKER_USERNAME ma afno dockerhub ko name lekhni and password banaune arko secret ma click garera ani agi docekrhub ko secret leko paste gardini.
+#kam gareko herne yellow dot ma click garesi herna milcha.
